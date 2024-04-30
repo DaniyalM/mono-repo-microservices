@@ -10,6 +10,7 @@ import { UserDocument, UserSchema } from './models/users.schema';
     DatabaseModule.forFeature([{ name: UserDocument.name, schema: UserSchema }]),
     LoggerModule],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository]
+  providers: [UsersService, UsersRepository],
+  exports: [UsersService]
 })
 export class UsersModule { }
