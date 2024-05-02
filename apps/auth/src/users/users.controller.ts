@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, UnprocessableEntityException, UseGuards } 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { CurrentUser } from '../current-user.decorator';
+import { CurrentUser } from '@app/common';
 import { UserDocument } from './models/users.schema';
 
 @Controller('users')
