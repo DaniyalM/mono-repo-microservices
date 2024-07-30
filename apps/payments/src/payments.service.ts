@@ -9,8 +9,6 @@ export class PaymentsService {
 
 
   async createCharge(createCharge: CreateChargeDto) {
-
     return createCharge;
-
   }
 }

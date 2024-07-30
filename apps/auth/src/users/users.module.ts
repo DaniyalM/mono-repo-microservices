@@ -6,9 +6,11 @@ import { DatabaseModule, LoggerModule } from '@app/common';
 import { UserDocument, UserSchema } from './models/users.schema';
 
 @Module({
-  imports: [DatabaseModule,
+  imports: [
+    DatabaseModule,
     DatabaseModule.forFeature([{ name: UserDocument.name, schema: UserSchema }]),
-    LoggerModule],
+    LoggerModule
+  ],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
   exports: [UsersService]

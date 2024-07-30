@@ -8,9 +8,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver } from '@nestjs/apollo';
 
 @Module({
-  imports: [UsersModule, LoggerModule,
+  imports: [
+    UsersModule, LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
@@ -29,6 +32,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         }
       }),
       inject: [ConfigService]
+    }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: true,
+      driver: ApolloDriver,
     }),
   ],
   controllers: [AuthController],
