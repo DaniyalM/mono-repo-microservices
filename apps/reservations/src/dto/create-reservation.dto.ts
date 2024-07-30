@@ -1,7 +1,29 @@
+import { Type } from "class-transformer";
+import { IsDate, IsDefined, IsEmpty, IsNotEmpty, IsNotEmptyObject, IsString, ValidateIf, ValidateNested } from "class-validator";
+import { CreateChargeDto } from "@app/common";
+
 export class CreateReservationDto {
-    startDate:Date;
-    endDate:Date;
-    userId:string;
-    placeId:string;
-    invoiceId:string;
+    @IsDate()
+    @Type(() => Date)
+    startDate: Date;
+
+    @IsDate()
+    @Type(() => Date)
+    endDate: Date;
+
+    @IsString()
+    @IsNotEmpty()
+    placeId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    invoiceId: string;
+
+    @IsDefined()
+    @IsNotEmptyObject()
+    @ValidateNested()
+    @Type(() => CreateChargeDto)
+    charge: CreateChargeDto;
+
+
 }
