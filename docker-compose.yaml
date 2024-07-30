@@ -1,17 +1,4 @@
 services:
-  
-  gateway:
-    build:
-      context: .
-      dockerfile: ./apps/gateway/Dockerfile
-      target: development
-    command: npm run start:dev gateway
-    environment:
-      - HTTP_PORT=3000
-    ports:
-      - '3000:3000'
-    volumes:
-      - .:/usr/src/app
   auth:
     build:
       context: .
@@ -30,5 +17,36 @@ services:
       - '3001:3001'
     volumes:
       - .:/usr/src/app
+    networks:
+      - app-network
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+      target: development
+    command: npm run start:dev gateway
+    environment:
+      - HTTP_PORT=3000
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - app-network  
+  
   mongo:
     image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:    

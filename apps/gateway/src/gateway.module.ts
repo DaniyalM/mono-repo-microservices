@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import * as Joi from 'joi';
+import { GatewayResolver } from './gateway.resolver';
 
 
 @Module({
@@ -26,8 +27,8 @@ import * as Joi from 'joi';
         supergraphSdl: new IntrospectAndCompose({
           subgraphs: [
             {
-              name: 'auth',
-              url: 'http://localhost:3001/graphql'
+              name: 'authentication',
+              url: 'http://auth:3001/graphql'
             }
           ]
         }),
@@ -35,7 +36,7 @@ import * as Joi from 'joi';
           return new RemoteGraphQLDataSource({
             url,
             willSendRequest({ request, context }) {
-              request.http.headers.set('user', context.user ? JSON.stringify(context.user) : null)
+              // request.http.headers.set('user', context.user ? JSON.stringify(context.user) : null)
             }
           })
         }

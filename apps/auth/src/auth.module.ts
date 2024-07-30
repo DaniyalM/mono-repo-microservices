@@ -9,7 +9,7 @@ import * as Joi from 'joi';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver } from '@nestjs/apollo';
+import {  ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
 import { AuthResolver } from './auth.resolver';
 
 @Module({
@@ -35,10 +35,12 @@ import { AuthResolver } from './auth.resolver';
       }),
       inject: [ConfigService]
     }),
-    GraphQLModule.forRoot({
-      autoSchemaFile: true, // Or provide a path if not using auto-schema file
-      driver: ApolloDriver,
-    }),
+    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+      driver: ApolloFederationDriver,
+      autoSchemaFile: {
+        federation: 2
+      }
+    })
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, AuthResolver],
