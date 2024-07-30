@@ -11,7 +11,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 export class AuthResolver {
     constructor(private readonly authService: AuthService) { }
 
-    @Mutation(() => UserDocument) // Assuming UserDocument is a GraphQL type or mapped correctly
+    @Mutation(() => UserDocument) 
     @UseGuards(LocalAuthGuard)
     async login(
         @CurrentUser() user: UserDocument,
