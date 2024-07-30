@@ -1,12 +1,22 @@
 import { Module } from '@nestjs/common';
-import { GatewayController } from './gateway.controller';
 import { GatewayService } from './gateway.service';
 import { GraphQLModule } from '@nestjs/graphql';
+import { LoggerModule } from '@app/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
+import * as Joi from 'joi';
+
 
 @Module({
   imports: [
+    LoggerModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        HTTP_PORT: Joi.number().required(),
+      })
+    }),
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
       // server: {
@@ -15,14 +25,10 @@ import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
           subgraphs: [
-            // {
-            //   name: 'user',
-            //   url: 'http://localhost:3001/graphql'
-            // },
-            // {
-            //   name: 'auth',
-            //   url: 'http://localhost:3002/graphql'
-            // }
+            {
+              name: 'auth',
+              url: 'http://localhost:3001/graphql'
+            }
           ]
         }),
         buildService({ url }) {
@@ -37,7 +43,6 @@ import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 
     })
   ],
-  controllers: [GatewayController],
   providers: [GatewayService],
 })
 export class GatewayModule { }

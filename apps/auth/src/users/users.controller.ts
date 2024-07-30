@@ -12,20 +12,20 @@ export class UsersController {
         private readonly usersService: UsersService
     ) { }
 
-    @Post()
-    async createUser(@Body() createUserDto: CreateUserDto) {
-        try {
-            await this.usersService.validateUserDto(createUserDto);
-            return this.usersService.createUser(createUserDto);
-        } catch (error) {
-            return new UnprocessableEntityException(error);
-        }
+    // @Post()
+    // async createUser(@Body() createUserDto: CreateUserDto) {
+    //     try {
+    //         await this.usersService.validateUserDto(createUserDto);
+    //         return this.usersService.createUser(createUserDto);
+    //     } catch (error) {
+    //         return new UnprocessableEntityException(error);
+    //     }
 
-    }
+    // }
 
-    @Get()
-    @UseGuards(JwtAuthGuard)
-    async getUser(@CurrentUser() user: UserDocument) {
-        return user;
-    }
+    // @Get()
+    // @UseGuards(JwtAuthGuard)
+    // async getUser(@CurrentUser() user: UserDocument) {
+    //     return user;
+    // }
 }

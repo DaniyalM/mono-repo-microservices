@@ -1,26 +1,33 @@
 services:
+  
+  gateway:
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+      target: development
+    command: npm run start:dev gateway
+    environment:
+      - HTTP_PORT=3000
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
   auth:
     build:
       context: .
       dockerfile: ./apps/auth/Dockerfile
       target: development
     command: npm run start:dev auth
-    env_file:
-      - ./apps/auth/.env
+    # env_file:
+    #   - ./apps/auth/.env
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/sleepr
+      - JWT_SECRET=secret123
+      - JWT_EXPIRATION=3600
+      - HTTP_PORT=3001
+      - TCP_PORT=3002
     ports:
       - '3001:3001'
-    volumes:
-      - .:/usr/src/app
-  gateway:
-    build:
-      context: .
-      dockerfile: ./apps/gateway/Dockerfile
-      target: development
-    command: npm run start:dev auth
-    env_file:
-      - ./apps/auth/.env
-    ports:
-      - '3000:3000'
     volumes:
       - .:/usr/src/app
   mongo:

@@ -10,10 +10,12 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
+import { AuthResolver } from './auth.resolver';
 
 @Module({
   imports: [
-    UsersModule, LoggerModule,
+    UsersModule,
+    LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
@@ -34,11 +36,11 @@ import { ApolloDriver } from '@nestjs/apollo';
       inject: [ConfigService]
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: true,
+      autoSchemaFile: true, // Or provide a path if not using auto-schema file
       driver: ApolloDriver,
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, AuthResolver],
 })
 export class AuthModule { }

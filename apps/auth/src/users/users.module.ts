@@ -4,15 +4,22 @@ import { UsersService } from './users.service';
 import { UsersRepository } from './users.repository';
 import { DatabaseModule, LoggerModule } from '@app/common';
 import { UserDocument, UserSchema } from './models/users.schema';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver } from '@nestjs/apollo';
+import { UsersResolver } from './user.resolver';
 
 @Module({
   imports: [
     DatabaseModule,
     DatabaseModule.forFeature([{ name: UserDocument.name, schema: UserSchema }]),
-    LoggerModule
+    LoggerModule,
+    GraphQLModule.forRoot({
+      autoSchemaFile: true, // Or provide a path if not using auto-schema file
+      driver: ApolloDriver,
+    }),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
+  providers: [UsersService, UsersRepository, UsersResolver],
   exports: [UsersService]
 })
 export class UsersModule { }

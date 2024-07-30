@@ -9,19 +9,19 @@ import { UnprocessableEntityException } from '@nestjs/common';
 
 @Resolver('User')
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
-  @Mutation(() => UserDocument) 
-  async createUser(@Args('createUserInput') createUserDto: CreateUserDto) {
-    try {
-      await this.usersService.validateUserDto(createUserDto);
-      return this.usersService.createUser(createUserDto);
-    } catch (error) {
-      throw new UnprocessableEntityException(error);
-    }
-  }
+  // @Mutation(() => UserDocument) 
+  // async createUser(@Args('createUserInput') createUserDto: CreateUserDto) {
+  //   try {
+  //     await this.usersService.validateUserDto(createUserDto);
+  //     return this.usersService.createUser(createUserDto);
+  //   } catch (error) {
+  //     throw new UnprocessableEntityException(error);
+  //   }
+  // }
 
-  @Query(() => UserDocument) 
+  @Query(() => UserDocument)
   @UseGuards(JwtAuthGuard)
   async getUser(@CurrentUser() user: UserDocument) {
     return user;
