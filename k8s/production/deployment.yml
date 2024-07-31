@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  labels:
+    app: auth-service
+    environment: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+        environment: production
+    spec:
+      containers:
+      - name: auth-service
+        image: myusername/my-app-auth:latest
+        ports:
+        - containerPort: 3001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  labels:
+    app: gateway-service
+    environment: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+        environment: production
+    spec:
+      containers:
+      - name: gateway-service
+        image: lunara/gateway-v1:latest
+        ports:
+        - containerPort: 3000
+# Similarly for gateway-service
